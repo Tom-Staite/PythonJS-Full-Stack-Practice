@@ -1,9 +1,20 @@
-# Relative import
-from config import db
+from flask import request, jsonify
+from config import app, db
+from models import Contact
 
-# db.Model is a database model
-class Contact(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    first_name = db.Column(db.String(80), unique=False, nullable=False)
-    last_name = db.Column(db.String(80), unique=False, nullable=False)
-    email = db.Column(db.String(120), unique=True, nullable=False)
+@app.route("/contacts", methods=["GET"])
+def get_contacts():
+    contacts = Contact.query.all()
+    json_contacts = list(map(lambda x: x.to_json(), contacts))
+    return jsonify({"contacts": json_contacts})
+
+
+
+if __name__ == "__main__":
+    
+    # Spin up the db and create the models if they do not currently exist
+    with app.app_context():
+        db.create_all()
+    
+    app.run(debug=True)
+
