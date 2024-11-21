@@ -65,7 +65,8 @@ if __name__ == "__main__":
     
     # Spin up the db and create the models if they do not currently exist
     with app.app_context():
-        db.create_all()
+        db.create_all() 
     
     app.run(debug=True)
 
+  
